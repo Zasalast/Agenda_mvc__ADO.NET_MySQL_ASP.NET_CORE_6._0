@@ -8,21 +8,36 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
 {
     public class UsuarioRepository
     {
+     
+       
+
+
         private readonly string _connectionString;
         private readonly RolRepository _rolRepository;
-        public UsuarioRepository(IConfiguration config)
+
+        public UsuarioRepository(IConfiguration config, RolRepository rolRepository)
         {
             _connectionString = config.GetConnectionString("DefaultConnection");
+            _rolRepository = rolRepository;
         }
+
+
+
+
 
         public List<Persona> GetUsuarios()
         {
+            var usuarios = new List<Persona>();
+
             using (var connection = new MySqlConnection(_connectionString))
             {
-                var usuarios = new List<Persona>();
-
                 connection.Open();
-                using (var command = new MySqlCommand("SELECT * FROM Persona", connection))
+
+                var sql = @"SELECT p.IdPersona, p.Nombres, p.Apellidos, r.IdRol
+                            FROM Persona p
+                            INNER JOIN Rol r ON p.IdRol = r.IdRol";
+
+                using (var command = new MySqlCommand(sql, connection))
                 {
                     using (var reader = command.ExecuteReader())
                     {
@@ -33,21 +48,23 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
                                 IdPersona = reader.GetInt32("IdPersona"),
                                 Nombres = reader.GetString("Nombres"),
                                 Apellidos = reader.GetString("Apellidos"),
-                                IdRol = new Rol { IdRol = reader.GetInt32("IdRol") } // Crear objeto Rol directamente
+                                IdRol = reader.GetInt32("IdRol")
                             };
 
                             // Cargar relación de Rol
-                            var rol = _rolRepository.GetRolById(persona.IdRol.IdRol);
+                            var rol = _rolRepository.GetRolById(persona.IdRol);
                             persona.IdRol = rol;
 
                             usuarios.Add(persona);
                         }
                     }
                 }
-
-                return usuarios;
             }
+
+            return usuarios;
         }
+
+
 
         public Persona GetUsuarioById(int id)
         {
@@ -56,7 +73,13 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
                 var usuario = new Persona();
 
                 connection.Open();
-                using (var command = new MySqlCommand("SELECT * FROM Persona WHERE IdPersona = @IdPersona", connection))
+
+                var sql = @"SELECT p.IdPersona, p.Nombres, p.Apellidos, r.IdRol
+                            FROM Persona p
+                            INNER JOIN Rol r ON p.IdRol = r.IdRol
+                            WHERE p.IdPersona = @IdPersona";
+
+                using (var command = new MySqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@IdPersona", id);
 
@@ -65,11 +88,11 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
                         if (reader.Read())
                         {
                             usuario.IdPersona = reader.GetInt32("IdPersona");
-                            usuario.Nombres = reader.GetString("Nombre");
-                            usuario.Apellidos = reader.GetString("Apellido");
+                            usuario.Nombres = reader.GetString("Nombres");
+                            usuario.Apellidos = reader.GetString("Apellidos");
 
                             // Leer el IdRol directamente y luego obtener el objeto Rol
-                            int idRol = reader.GetInt32("IdRol");
+                            var idRol = reader.GetInt32("IdRol");
                             usuario.IdRol = _rolRepository.GetRolById(idRol);
                         }
                     }

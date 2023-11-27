@@ -144,29 +144,26 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
             InsertPermisoRoles(permiso);
         }
 
-        private void InsertPermisoRoles(Permiso permiso)
+
+
+        private void InsertPermisoRoles(Permiso permiso, MySqlConnection connection)
         {
-            using (var conn = new MySqlConnection(_connectionString))
+            var sql = "INSERT INTO roles_permisos (IdRol, IdPermiso) VALUES (@IdRol, @IdPermiso);";
+
+            foreach (var rol in permiso.Roles)
             {
-                string sql = @"INSERT INTO roles_permisos (id_rol, id_permiso) 
-                               VALUES (@idRol, @idPermiso)";
-
-                foreach (var rolPermiso in permiso.RolesPermisos)
+                using (var command = new MySqlCommand(sql, connection))
                 {
-                    using (var cmd = new MySqlCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@idRol", rolPermiso.IdRol);
-                        cmd.Parameters.AddWithValue("@idPermiso", permiso.IdPermiso);
+                    command.Parameters.AddWithValue("@IdRol", rol.IdRol);
+                    command.Parameters.AddWithValue("@IdPermiso", permiso.Roles);
 
-                        conn.Open();
-
-                        cmd.ExecuteNonQuery();
-
-                        conn.Close();
-                    }
+                    command.ExecuteNonQuery();
                 }
             }
         }
+
+
+
 
         private void DeletePermisoRoles(int permisoId)
         {
@@ -188,20 +185,43 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
             }
         }
 
-   
+
 
         private Permiso MapperPermiso(MySqlDataReader reader)
         {
-            var permiso = new Permiso();
-
-            permiso.IdPermiso = reader.GetInt32("id_permiso");
-
-            while (reader.NextResult())
+            var permiso = new Permiso
             {
-                var rol = new Rol();
+                IdPermiso = reader.GetInt32("IdPermiso"),
+                Nombre = reader.GetString("Nombre")
+            };
 
-                // Mapear rol
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                connection.Open();
 
+                var sql = @"SELECT r.IdRol, r.Nombre
+                    FROM roles_permisos rp
+                    INNER JOIN roles r ON rp.IdRol = r.IdRol
+                    WHERE rp.IdPermiso = @IdPermiso";
+
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@IdPermiso", permiso.IdPermiso);
+
+                    using (var rolReader = command.ExecuteReader())
+                    {
+                        while (rolReader.Read())
+                        {
+                            var rol = new Rol
+                            {
+                                IdRol = rolReader.GetInt32("IdRol"),
+                                Nombre = rolReader.GetString("Nombre")
+                            };
+
+                            permiso.RolesPermisos.Add(rol);
+                        }
+                    }
+                }
             }
 
             return permiso;

@@ -19,7 +19,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "SELECT * FROM cancelaciones";
+                string query = "SELECT * FROM Cancelaciones";
 
                 connection.Open();
                 MySqlCommand command = new MySqlCommand(query, connection);
