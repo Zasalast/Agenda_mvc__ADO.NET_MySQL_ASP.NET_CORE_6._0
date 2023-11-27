@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qa5m5FmUd1QuIzLkLnoiU6jilpGbi/50/DNnQZ2eC1ZttTn7JO1Buq3TI36s1AWTS/JfjiDdXG3fV3NvU4Djqw==",
+  "dgSpecHash": "8zwLUmf/msb+MtxktHkenRZVxRX/j+18j7Aqqf6k1zQqGsXAmOX0DSzc2sfP6W6ID7c6EVBeV6oSS7sr95MyiQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ZASALAS\\source\\repos\\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0\\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0.csproj",
+  "projectFilePath": "C:\\Users\\ZASALAS\\source\\repos\\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0\\Agenda mvc  ADONET MySQL ASPNET CORE 6.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ZASALAS\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
     "C:\\Users\\ZASALAS\\.nuget\\packages\\google.protobuf\\3.21.9\\google.protobuf.3.21.9.nupkg.sha512",

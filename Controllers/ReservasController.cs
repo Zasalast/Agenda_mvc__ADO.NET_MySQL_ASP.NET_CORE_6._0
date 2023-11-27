@@ -2,49 +2,40 @@
 using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories;
 using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Models;
 using Microsoft.AspNetCore.Mvc;
-using MySql.Data.MySqlClient;
 
 namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
 {
+
     public class ReservasController : Controller
     {
-        private readonly ConexionBD conexionBD;
+
+        private readonly ConexionBD _conexionBD;
         private readonly ReservasRepository _reservasRepository;
-        public ReservasController(ReservasRepository reservasRepository)
+
+        public ReservasController(ConexionBD conexionBD, ReservasRepository reservasRepository)
         {
+            _conexionBD = conexionBD;
             _reservasRepository = reservasRepository;
         }
 
-
-        public IActionResult Index()
+        // GET: ReservasController
+        public ActionResult Index()
         {
-            List<Agendamiento> reservas = new List<Agendamiento>();
-
-            string query = "SELECT * FROM agendamientos";
-
-            using (var command = new MySqlCommand(query, conexionBD.ObtenerConexion())
-            {
-                
-                var reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    var reserva = new Agendamiento();
-                    reserva.IdAgendamiento = (int)reader["IdAgendamiento"];
-                    //leer y asignar otras propiedades
-
-                    reservas.Add(reserva);
-                }
-
-            _connectionString.Close();
-            }
+            var reservas = _reservasRepository.GetAllReservas;
 
             return View(reservas);
         }
 
-        // Controlador
+        // GET: ReservasController/Create
+        public ActionResult Crear()
+        {
+            return View();
+        }
 
-        public IActionResult Create(Agendamiento reserva)
+        // POST: ReservasController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Crear(Agendamiento reserva)
         {
             try
             {
@@ -52,30 +43,30 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
                 {
                     int id = _reservasRepository.CreateReserva(reserva);
 
-                    TempData["Msg"] = "Reserva creada";
+                    TempData["Mensaje"] = "Reserva creada exitosamente";
 
                     return RedirectToAction("Detalle", new { id });
                 }
+
+                return View(reserva);
+
             }
             catch (Exception ex)
             {
                 // Log error
-
                 return View(reserva);
             }
         }
-    // Controlador 
-    public int Delete(int id)
-    {
-        int id = _reservasRepository.DeleteReserva(id);
-        return id;
+
+        // GET: ReservasController/Delete/5  
+        public ActionResult Eliminar(int id)
+        {
+            _reservasRepository.DeleteReserva(id);
+
+            TempData["Mensaje"] = "Reserva eliminada";
+
+            return RedirectToAction("Index");
+        }
+
     }
-
-
-}
-
-
-
-        
-     
 }

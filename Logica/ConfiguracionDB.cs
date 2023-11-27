@@ -5,14 +5,14 @@ using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data;
 
 namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Logica;
 
-    public class Configuracion
+    public class ConfiguracionDB
     {
 
         MySqlConnection conex;
 
         private readonly ConexionBD _conexionBD;
 
-        public Configuracion(ConexionBD conexionBD)
+        public ConfiguracionDB(ConexionBD conexionBD)
         {
         _conexionBD = conexionBD;
          }

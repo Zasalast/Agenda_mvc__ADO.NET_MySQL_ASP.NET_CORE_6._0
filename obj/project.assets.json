@@ -9919,9 +9919,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ZASALAS\\source\\repos\\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0\\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0.csproj",
-      "projectName": "Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0",
-      "projectPath": "C:\\Users\\ZASALAS\\source\\repos\\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0\\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0.csproj",
+      "projectUniqueName": "C:\\Users\\ZASALAS\\source\\repos\\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0\\Agenda mvc  ADONET MySQL ASPNET CORE 6.csproj",
+      "projectName": "Agenda mvc  ADONET MySQL ASPNET CORE 6",
+      "projectPath": "C:\\Users\\ZASALAS\\source\\repos\\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0\\Agenda mvc  ADONET MySQL ASPNET CORE 6.csproj",
       "packagesPath": "C:\\Users\\ZASALAS\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\ZASALAS\\source\\repos\\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0\\obj\\",
       "projectStyle": "PackageReference",

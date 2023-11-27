@@ -12,9 +12,10 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Models
         public DateTime? Fecha { get; set; }
         public TimeSpan? Hora { get; set; }
         public char? Estado { get; set; }
-        public int? IdAgenda { get; set; }
-
-        public Persona Cliente { get; set; }
-        public Agenda Agenda { get; set; }
+        public int? IdAgenda { get; set; }       
+       
+        public int? IdCancelacion { get; set; }
+        public int? IdReserva { get; set; }
+       
     }
 }
