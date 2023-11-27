@@ -40,5 +40,10 @@ app.UseAuthentication();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Agendamiento}/{action=AgendamientoCreate}/{id?}");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Reservas}/{action=AgendaCreate}/{id?}");
 app.Run();
