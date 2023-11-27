@@ -9,7 +9,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
     public class RolRepository
     {
         private readonly string _connectionString;
-
+        private readonly PermisosRepository _permisosRepository;
         public RolRepository(IConfiguration config)
         {
             _connectionString = config.GetConnectionString("DefaultConnection");
@@ -35,7 +35,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
                             };
 
                             // Cargar relación de permisos para el rol
-                            rol.RolesPermisos = _permisosRepository.GetPermisosByRolId(rol.IdRol);
+                          //  rol.RolesPermisos = _permisosRepository.GetPermisosByRolId(rol.IdRol);
 
                             roles.Add(rol);
                         }
@@ -65,7 +65,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
                             rol.Nombre = reader.GetString("Nombre");
 
                             // Cargar relación de permisos para el rol
-                            rol.RolesPermisos = _permisoRepository.GetPermisosByRolId(rol.IdRol);
+                          //  rol.RolesPermisos = _permisosRepository.GetPermisosByRolId(rol.IdRol);
                         }
                     }
                 }

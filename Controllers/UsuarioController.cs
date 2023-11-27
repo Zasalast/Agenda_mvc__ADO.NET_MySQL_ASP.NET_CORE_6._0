@@ -8,7 +8,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
     public class UsuarioController : Controller
     {
         private readonly UsuarioRepository _usuarioRepository;
-
+        private readonly RolRepository _rolRepository;
         public UsuarioController(UsuarioRepository usuarioRepository)
         {
             _usuarioRepository = usuarioRepository;
@@ -41,7 +41,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Usuario usuario)
+        public IActionResult Create(Persona usuario)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            _usuarioRepository.DeleteUsuario(id);
+            _usuarioRepository.DeletePersona(id);
             return RedirectToAction(nameof(Index));
         }
     }

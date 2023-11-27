@@ -1,8 +1,10 @@
 ﻿using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Models;
+using Humanizer;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
 {
@@ -17,60 +19,87 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
 
         public List<Permiso> GetPermisos()
         {
-            using (MySqlConnection conn = new MySqlConnection(_connectionString))
+            List<Permiso> permisos = new List<Permiso>();
+            string sql = "SELECT * FROM permisos";
+
+            using (var conn = new MySqlConnection(_connectionString))
             {
-                string sql = "SELECT * FROM permisos";
+                conn.Open();
 
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                using (var cmd = new MySqlCommand(sql, conn))
                 {
-                    conn.Open();
-
-                    MySqlDataReader reader = cmd.ExecuteReader();
-
-                    List<Permiso> permisos = new List<Permiso>();
-
-                    while (reader.Read())
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
-                        Permiso permiso = MapperPermiso(reader);
-                        permisos.Add(permiso);
+                        while (reader.Read())
+                        {
+                            Permiso permiso = MapperPermiso(reader);
+                            GetPermisoRolesById(permiso);
+                            permisos.Add(permiso);
+                        }
                     }
-
-                    conn.Close();
-
-                    return permisos;
                 }
+
+                conn.Close();
             }
+
+            return permisos;
         }
 
         public Permiso GetPermisoById(int id)
         {
             Permiso permiso = new Permiso();
-
             string sql = @"SELECT p.*, rp.id_rol, r.nombre AS rol_nombre
-                           FROM permisos p  
-                           INNER JOIN roles_permisos rp ON rp.id_permiso = p.id_permiso
-                           INNER JOIN roles r ON r.id_rol = rp.id_rol
-                           WHERE p.id_permiso = @idPermiso";
+                   FROM permisos p  
+                   INNER JOIN roles_permisos rp ON rp.id_permiso = p.id_permiso
+                   INNER JOIN roles r ON r.id_rol = rp.id_rol
+                   WHERE p.id_permiso = @idPermiso";
 
             using (var conn = new MySqlConnection(_connectionString))
             {
+                conn.Open();
+
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@idPermiso", id);
 
-                    conn.Open();
-
-                    // Ejecutar y leer datos
-
-                    conn.Close();
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            permiso = MapperPermiso(reader);
+                            GetPermisoRolesById(permiso);
+                        }
+                    }
                 }
-            }
 
-            GetPermisoRolesById(permiso);
+                conn.Close();
+            }
 
             return permiso;
         }
 
+
+
+        private void GetPermisoRolesById(Permiso permiso)
+        {
+            string sql = "SELECT r.* FROM roles_permisos rp JOIN roles r ON r.id_rol = rp.id_rol  WHERE rp.id_permiso = @idPermiso";  
+
+      using (var conn = new MySqlConnection())
+            {
+                // Ejecutar consulta
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                {
+                    var rol = new Rol();
+
+                    // Setear props del rol
+
+                    permiso.RolesPermisos.Add(rol);
+                    }
+                }
+            }
+        }
         public void DeletePermiso(int id)
         {
             DeletePermisoRoles(id);
@@ -131,11 +160,21 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
             }
         }
 
+   
+
         private Permiso MapperPermiso(MySqlDataReader reader)
         {
-            Permiso permiso = new Permiso();
+            var permiso = new Permiso();
+
             permiso.IdPermiso = reader.GetInt32("id_permiso");
-            permiso.Nombre = reader.GetString("nombre");
+
+            while (reader.NextResult())
+            {
+                var rol = new Rol();
+
+                // Mapear rol
+
+            }
 
             return permiso;
         }

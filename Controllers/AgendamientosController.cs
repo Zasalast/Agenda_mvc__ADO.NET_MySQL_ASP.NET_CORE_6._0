@@ -10,8 +10,9 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
 {
     public class AgendamientosController : Controller
     {
-        private readonly  AgendamientoRepository _agendamientoRepository;
-
+        private readonly AgendamientoRepository _agendamientoRepository;
+        private readonly ReservasRepository _reservaRepository;
+        
         public AgendamientosController(AgendamientoRepository agendamientoRepository)
         {
             _agendamientoRepository = agendamientoRepository;
@@ -37,10 +38,10 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
 
         // GET: Agendamientos/Create
         public IActionResult Create()
-        {
+       {
             // Cargar lista de clientes y reservas disponibles
-            ViewBag.Clientes = _clienteRepository.GetClientes();
-            ViewBag.Reservas = _reservaRepository.GetReservasDisponibles();
+         // ViewBag.Clientes = _clienteRepository.GetClientes();
+          ViewBag.Reservas = _reservaRepository.GetReservasDisponibles();
             return View();
         }
 
