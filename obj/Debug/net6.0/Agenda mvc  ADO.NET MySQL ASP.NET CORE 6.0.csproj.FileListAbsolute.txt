@@ -6,3 +6,4 @@ C:\Users\ZASALAS\source\repos\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0\obj\Deb
 C:\Users\ZASALAS\source\repos\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0\obj\Debug\net6.0\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\ZASALAS\source\repos\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0\obj\Debug\net6.0\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0.RazorAssemblyInfo.cache
 C:\Users\ZASALAS\source\repos\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0\obj\Debug\net6.0\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0.RazorAssemblyInfo.cs
+C:\Users\ZASALAS\source\repos\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0\obj\Debug\net6.0\Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0.sourcelink.json

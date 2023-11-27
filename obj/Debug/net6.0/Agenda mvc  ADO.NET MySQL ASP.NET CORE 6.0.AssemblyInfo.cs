@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+acc4d748c527cad7b93ab569e033fe05a32dd8d9")]
 [assembly: System.Reflection.AssemblyProductAttribute("Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Agenda mvc  ADO.NET MySQL ASP.NET CORE 6.0")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

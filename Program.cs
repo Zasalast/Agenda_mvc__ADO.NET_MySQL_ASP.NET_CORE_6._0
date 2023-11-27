@@ -1,10 +1,15 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data;
+using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton(new Contexto(builder.Configuration.GetConnectionString("Conexion")));
+builder.Services.Configure<MySQLSettings>(
+     builder.Configuration.GetSection("MySQLSettings"));
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
+builder.Services.AddTransient<AgendaRepository>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(o =>
     {

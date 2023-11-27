@@ -1,4 +1,6 @@
-﻿using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Models;
+﻿using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data;
+using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories;
+using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Models;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 
@@ -6,13 +8,13 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
 {
     public class ReservasController : Controller
     {
-      
-        private readonly MySqlConnection _connection;
-
-        public ReservasController()
+        private readonly ConexionBD conexionBD;
+        private readonly ReservasRepository _reservasRepository;
+        public ReservasController(ReservasRepository reservasRepository)
         {
-            _connection = new MySqlConnection(connectionString);
+            _reservasRepository = reservasRepository;
         }
+
 
         public IActionResult Index()
         {
@@ -20,9 +22,9 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
 
             string query = "SELECT * FROM agendamientos";
 
-            using (var command = new MySqlCommand(query, _connection))
+            using (var command = new MySqlCommand(query, conexionBD.ObtenerConexion())
             {
-                _connection.Open();
+                
                 var reader = command.ExecuteReader();
 
                 while (reader.Read())
@@ -34,10 +36,46 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
                     reservas.Add(reserva);
                 }
 
-                _connection.Close();
+            _connectionString.Close();
             }
 
             return View(reservas);
         }
+
+        // Controlador
+
+        public IActionResult Create(Agendamiento reserva)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    int id = _reservasRepository.CreateReserva(reserva);
+
+                    TempData["Msg"] = "Reserva creada";
+
+                    return RedirectToAction("Detalle", new { id });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error
+
+                return View(reserva);
+            }
+        }
+    // Controlador 
+    public int Delete(int id)
+    {
+        int id = _reservasRepository.DeleteReserva(id);
+        return id;
     }
+
+
+}
+
+
+
+        
+     
 }
