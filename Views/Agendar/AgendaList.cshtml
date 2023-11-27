@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Models.Agenda>
+
+@{
+    ViewData["Title"] = "AgendaList";
+}
+
+<h1>AgendaList</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdAgenda)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdSede)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdServicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdHorario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdProfesional)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdAgenda)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdSede)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdServicio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdHorario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdProfesional)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

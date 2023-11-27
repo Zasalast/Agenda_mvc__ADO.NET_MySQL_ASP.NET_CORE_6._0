@@ -85,7 +85,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
                         return NotFound();
                     }
 
-                    _permisosRepository.UpdatePermiso(1,existingPermiso);
+                    _permisosRepository.UpdatePermiso(id, permiso);
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)

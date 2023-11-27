@@ -46,11 +46,11 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
         // POST: /Rol/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Rol rol)
+        public IActionResult Create(Rol rol, List<int> idPermisos)
         {
             if (ModelState.IsValid)
             {
-                _rolRepository.CreateRol(rol);
+                _rolRepository.CreateRol(rol, idPermisos);
                 return RedirectToAction(nameof(Index));
             }
             return View(rol);
@@ -72,7 +72,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
         // POST: /Rol/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Rol rol)
+        public IActionResult Edit(int id, Rol rol, List<int> idPermisos)
         {
             if (id != rol.IdRol)
             {
@@ -81,7 +81,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
 
             if (ModelState.IsValid)
             {
-                _rolRepository.UpdateRol(rol);
+                _rolRepository.UpdateRol(rol, idPermisos);
                 return RedirectToAction(nameof(Index));
             }
             return View(rol);
