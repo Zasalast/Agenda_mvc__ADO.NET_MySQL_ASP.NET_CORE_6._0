@@ -1,6 +1,8 @@
-﻿using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Models;
+﻿using System;
+using System.Collections.Generic;
 using MySql.Data.MySqlClient;
-
+using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Models;
+using System.Data;
 
 namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
 

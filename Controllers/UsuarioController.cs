@@ -68,7 +68,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Persona usuario)
         {
-            if (id != usuario.Id)
+            if (id != usuario.IdPersona)
             {
                 return NotFound();
             }

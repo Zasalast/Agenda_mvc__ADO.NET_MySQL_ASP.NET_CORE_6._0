@@ -14,6 +14,6 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Models
         public string Identificacion { get; set; }
         public int IdRol { get; set; }
 
-        public Rol Rol { get; set; }
+      
     }
 }

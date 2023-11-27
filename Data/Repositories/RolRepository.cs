@@ -15,7 +15,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
             _connectionString = config.GetConnectionString("DefaultConnection");
         }
 
-        public List<Rol> GetRol()
+        public List<Rol> GetRoles()
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -28,26 +28,25 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
                     {
                         while (reader.Read())
                         {
-                            var Rol = new Rol
+                            var rol = new Rol
                             {
-                                IdRol = reader.GetInt32("IdRol"),
+                                IdRol = reader.GetInt32("Id"),
                                 Nombre = reader.GetString("Nombre")
                             };
 
-                            // Cargar relación de Rol
-                            var permiso = _permisoRepository.GetPermisoById(Rol.IdPermiso);
-                            Rol.Permiso = permiso;
+                            // Cargar relación de permisos para el rol
+                            rol.RolesPermisos = _permisosRepository.GetPermisosByRolId(rol.IdRol);
 
-                            rol.Add(Rol);
+                            roles.Add(rol);
                         }
                     }
                 }
 
-                return rol;
+                return roles;
             }
         }
 
-        public Persona GetRolById(int id)
+        public Rol GetRolById(int id)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -64,12 +63,9 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
                         {
                             rol.IdRol = reader.GetInt32("IdRol");
                             rol.Nombre = reader.GetString("Nombre");
-                           
-                            rol.IdPermiso = reader.GetInt32("IdPermiso");
 
-                            // Cargar relación de Rol
-                            var permiso = _permisoRepository.GetRolById(rol.IdPermiso);
-                            rol.Permiso = permiso;
+                            // Cargar relación de permisos para el rol
+                            rol.RolesPermisos = _permisoRepository.GetPermisosByRolId(rol.IdRol);
                         }
                     }
                 }
@@ -78,49 +74,96 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
             }
         }
 
-        public void CreateUsuario(Persona usuario)
+        public void CreateRol(Rol rol)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 connection.Open();
-                using (var command = new MySqlCommand("INSERT INTO Rol (Nombre, IdPermiso) VALUES (@Nombre,   @IdPermiso)", connection))
+                using (var command = new MySqlCommand("INSERT INTO Rol (Nombre) VALUES (@Nombre)", connection))
                 {
                     command.Parameters.AddWithValue("@Nombre", rol.Nombre);
-                    
-                    command.Parameters.AddWithValue("@IdRol", rol.IdPermiso);
+                    command.ExecuteNonQuery();
 
+                    // Obtener el ID del rol insertado
+                    rol.IdRol = (int)command.LastInsertedId;
+                }
+
+                // Insertar las relaciones de permisos para el rol
+                InsertRolPermisos(rol);
+            }
+        }
+
+        public void UpdateRol(Rol rol)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = new MySqlCommand("UPDATE Rol SET Nombre = @Nombre WHERE IdRol = @IdRol", connection))
+                {
+                    command.Parameters.AddWithValue("@Nombre", rol.Nombre);
+                    command.Parameters.AddWithValue("@IdRol", rol.IdRol);
+                    command.ExecuteNonQuery();
+                }
+
+                // Actualizar las relaciones de permisos para el rol
+                UpdateRolPermisos(rol);
+            }
+        }
+
+        public void DeleteRol(int IdRol)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                // Eliminar las relaciones de permisos para el rol
+                DeleteRolPermisos(IdRol);
+
+                using (var command = new MySqlCommand("DELETE FROM Rol WHERE IdRol = @IdRol", connection))
+                {
+                    command.Parameters.AddWithValue("@IdRol", IdRol);
                     command.ExecuteNonQuery();
                 }
             }
         }
 
-        public void UpdateUsuario(Rol rol)
+        private void InsertRolPermisos(Rol rol)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 connection.Open();
-                using (var command = new MySqlCommand("UPDATE Usuarios SET Nombre = @Nombre, Apellido = @Apellido, IdRol = @IdRol WHERE Id = @Id", connection))
+                using (var command = new MySqlCommand("INSERT INTO RolPermiso (IdRol, IdPermiso) VALUES (@IdRol, @IdPermiso)", connection))
                 {
-                    command.Parameters.AddWithValue("@Nombre", rol.Nombre);
-                  
-                    command.Parameters.AddWithValue("@IdRol", rol.IdPermiso);
-                    command.Parameters.AddWithValue("@IdPersona", rol.IdRol);
-
-                    command.ExecuteNonQuery();
+                    foreach (var permiso in rol.RolesPermisos)
+                    {
+                        command.Parameters.Clear();
+                        command.Parameters.AddWithValue("@IdRol", rol.IdRol);
+                        command.Parameters.AddWithValue("@IdPermiso", permiso.IdPermiso);
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
         }
-        public void DeleteUsuario(int id)
+
+        private void UpdateRolPermisos(Rol rol)
         {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            // Eliminar las relaciones existentes
+            DeleteRolPermisos(rol.IdRol);
+
+            // Insertar las nuevas relaciones
+            InsertRolPermisos(rol);
+        }
+
+        private void DeleteRolPermisos(int rolId)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
             {
-                string query = "DELETE FROM Usuarios WHERE IdUsuario = @Id";
-
                 connection.Open();
-                MySqlCommand command = new MySqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Id", id);
-
-                command.ExecuteNonQuery();
+                using (var command = new MySqlCommand("DELETE FROM RolPermiso WHERE IdRol = @IdRol", connection))
+                {
+                    command.Parameters.AddWithValue("@IdRol", rolId);
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
