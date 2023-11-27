@@ -31,22 +31,28 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
         [HttpPost]
         public IActionResult Create(Permiso permiso)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
+                if (ModelState.IsValid)
                 {
-                    _permisosRepository.CreatePermiso(permiso);
+                   // _permisosRepository.CreatePermiso(permiso);
                     return RedirectToAction("Index");
                 }
-                catch (Exception ex)
+                else
                 {
-                    _logger.LogError($"Error al crear el permiso: {ex.Message}");
-                    ModelState.AddModelError(string.Empty, "Se produjo un error al intentar crear el permiso.");
+                    // El modelo no es válido, posiblemente debido a datos incorrectos.
+                    ModelState.AddModelError(string.Empty, "Datos de permiso no válidos.");
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error al crear el permiso: {ex.Message}");
+                ModelState.AddModelError(string.Empty, "Se produjo un error al intentar crear el permiso.");
             }
 
             return View(permiso);
         }
+
 
         public IActionResult Edit(int id)
         {
@@ -79,7 +85,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
                         return NotFound();
                     }
 
-                    _permisosRepository.UpdatePermiso(permiso);
+                    _permisosRepository.UpdatePermiso(1,existingPermiso);
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)

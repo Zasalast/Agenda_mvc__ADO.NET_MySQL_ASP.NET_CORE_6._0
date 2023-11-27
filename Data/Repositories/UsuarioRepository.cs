@@ -9,7 +9,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
     public class UsuarioRepository
     {
         private readonly string _connectionString;
-
+        private readonly RolRepository _rolRepository;
         public UsuarioRepository(IConfiguration config)
         {
             _connectionString = config.GetConnectionString("DefaultConnection");
@@ -28,19 +28,19 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
                     {
                         while (reader.Read())
                         {
-                            var Persona = new Persona
+                            var persona = new Persona
                             {
                                 IdPersona = reader.GetInt32("IdPersona"),
                                 Nombres = reader.GetString("Nombres"),
                                 Apellidos = reader.GetString("Apellidos"),
-                                IdRol = reader.GetInt32("IdRol")
+                                IdRol = new Rol { IdRol = reader.GetInt32("IdRol") } // Crear objeto Rol directamente
                             };
 
                             // Cargar relación de Rol
-                            var rol = _rolRepository.GetRolById(Persona.IdRol);
-                            Persona.Rol = rol;
+                            var rol = _rolRepository.GetRolById(persona.IdRol.IdRol);
+                            persona.IdRol = rol;
 
-                            usuarios.Add(Persona);
+                            usuarios.Add(persona);
                         }
                     }
                 }
@@ -67,11 +67,10 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
                             usuario.IdPersona = reader.GetInt32("IdPersona");
                             usuario.Nombres = reader.GetString("Nombre");
                             usuario.Apellidos = reader.GetString("Apellido");
-                            usuario.IdRol = reader.GetInt32("IdRol");
 
-                            // Cargar relación de Rol
-                            var rol = _rolRepository.GetRolById(usuario.IdRol);
-                            usuario.Rol = rol;
+                            // Leer el IdRol directamente y luego obtener el objeto Rol
+                            int idRol = reader.GetInt32("IdRol");
+                            usuario.IdRol = _rolRepository.GetRolById(idRol);
                         }
                     }
                 }
@@ -114,7 +113,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
         }
         public void DeletePersona(int id)
         {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
                 string query = "DELETE FROM Persona WHERE IdPersona = @Id";
 

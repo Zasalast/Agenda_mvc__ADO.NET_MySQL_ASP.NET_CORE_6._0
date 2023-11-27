@@ -5,13 +5,14 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
-
+using Microsoft.Extensions.Logging;
+using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers;
 namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
 {
     public class PermisosRepository
     {
         private readonly string _connectionString;
-
+        private readonly ILogger<PermisosController> _logger;
         public PermisosRepository(IConfiguration config)
         {
             _connectionString = config.GetConnectionString("DefaultConnection");
@@ -79,27 +80,49 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
         }
 
 
+        // Asegúrate de que la clase Permiso tiene una propiedad Roles
+        public class Permiso
+        {
+            // Otras propiedades de Permiso...
 
+            public List<Rol> Roles { get; set; } = new List<Rol>();
+        }
+
+        // En el método GetPermisoRolesById
         private void GetPermisoRolesById(Permiso permiso)
         {
-            string sql = "SELECT r.* FROM roles_permisos rp JOIN roles r ON r.id_rol = rp.id_rol  WHERE rp.id_permiso = @idPermiso";  
+            string sql = "SELECT r.* FROM roles_permisos rp JOIN roles r ON r.id_rol = rp.id_rol  WHERE rp.id_permiso = @idPermiso";
 
-      using (var conn = new MySqlConnection())
+            using (var conn = new MySqlConnection(_connectionString))
             {
-                // Ejecutar consulta
-                using (MySqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                {
-                    var rol = new Rol();
+                conn.Open();
 
-                    // Setear props del rol
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@idPermiso", permiso.Roles);
 
-                    permiso.RolesPermisos.Add(rol);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var rol = new Rol();
+
+                            // Setear propiedades del rol
+                            rol.IdRol = reader.GetInt32("id_rol");
+                            rol.Nombre = reader.GetString("nombre");
+
+                            // Agregar el rol a la lista de Roles en Permiso
+                            permiso.Roles.Add(rol);
+                        }
                     }
                 }
+
+                conn.Close();
             }
         }
+
+
+
         public void DeletePermiso(int id)
         {
             DeletePermisoRoles(id);
@@ -107,12 +130,17 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
 
         public void CreatePermiso(Permiso permiso)
         {
-            InsertPermisoRoles(permiso);
+            try
+            {
+                InsertPermisoRoles(permiso);
+            }catch(Exception ex) {_logger.LogError($"Error al crear el permiso: {ex.Message}");
+
+            }
         }
 
-        public void UpdatePermiso(Permiso permiso)
+        public void UpdatePermiso(int id,Permiso permiso)
         {
-            DeletePermisoRoles(permiso.IdPermiso);
+            DeletePermisoRoles(id);
             InsertPermisoRoles(permiso);
         }
 

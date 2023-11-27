@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Models;
 using MySql.Data.MySqlClient;
-using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Models;
-using System.Data;
+using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories
 {
     public class CancelacionRepository
