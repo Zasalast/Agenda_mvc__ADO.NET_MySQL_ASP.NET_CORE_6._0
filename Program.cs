@@ -3,6 +3,17 @@ using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data;
 using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Data.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
+ 
+
+// Add services to the container.
+ 
+
+ 
+
+
+
+
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<MySQLSettings>(
@@ -10,11 +21,7 @@ builder.Services.Configure<MySQLSettings>(
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 builder.Services.AddTransient<AgendaRepository>();
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(o =>
-    {
-        o.LoginPath = "/Persona/Login";
-    });
+//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme) .AddCookie(o => { o.LoginPath = "/Agenda/Login";  });
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
@@ -28,7 +35,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
-app.UseAuthorization();
+//.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

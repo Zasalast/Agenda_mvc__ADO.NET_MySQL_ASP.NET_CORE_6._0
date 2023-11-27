@@ -1,4 +1,6 @@
 ﻿using Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -18,6 +20,61 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
             return View();
         }
 
+
+        public IActionResult Agenda()
+        {
+            return View();
+        }
+        public IActionResult Agendamiento()
+        {
+            return View();
+        }
+        public IActionResult AgendamientoDelete()
+        {
+            return View();
+        }
+        public IActionResult AgendamientoList()
+        {
+            return View();
+        }
+        public IActionResult AgendamientoCreate()
+        {
+            return View();
+        }
+        public IActionResult AgendaDelete()
+        {
+            return View();
+        }
+        public IActionResult AgendaList()
+        {
+            return View();
+        }
+        public IActionResult AgendaCreate()
+        {
+            return View();
+        }
+        public IActionResult AgendamientoEdit()
+        {
+            return View();
+        }
+
+        public IActionResult AgendaEdit()
+        {
+            return View();
+        }
+        public IActionResult Home()
+        {
+            return View();
+        }
+        public IActionResult Cancelar()
+        {
+            return View();
+        }
+        
+        public IActionResult Asistencia()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
