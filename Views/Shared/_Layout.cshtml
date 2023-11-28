@@ -10,6 +10,22 @@
 </head>
 <body>
     <header>
+        @{
+            var routes = new[]
+            {
+        new { Name = "DetallesAgendamiento", Pattern = "Agendamiento/Details/{id}" },
+        new { Name = "CreateAgendamiento", Pattern = "Agendamiento/Create" },
+        new { Name = "EditarAgendamiento", Pattern = "Agendamiento/Edit/{id}" },
+        new { Name = "EliminarAgendamiento", Pattern = "Agendamiento/Delete/{id}" },
+        new { Name = "Index", Pattern = "Agendamiento" }, new { Name = "Detalles Agenda", Pattern = "Agenda/Details/{id}" },
+        new { Name = "CrearAgenda", Pattern = "Agenda/Create" },
+        new { Name = "EditarAgenda", Pattern = "Agenda/Edit/{id}" },
+        new { Name = "ListaAgenda", Pattern = "Agenda/List" },
+        new { Name = "EliminarAgenda", Pattern = "Agenda/Delete/{id}" },
+        new { Name = "IndexAgenda", Pattern = "Agenda" }
+        };
+        }
+     
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0</a>
@@ -22,16 +38,38 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                     
+                        @foreach (var route in routes)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Agendamiento" asp-action="@route.Name">@route.Name</a>
+                            </li>
+                        }
+
+                        }<!-- Navigation for AgendaController -->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Create">Crear Agenda</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Agenda" asp-action="Index">Index Agenda</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservas" asp-action="AgendamientoCreate">Crear Agendamiento</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Agenda" asp-action="Crear">Crear Agenda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Agenda" asp-action="Eliminar">Eliminar Agenda</a>
                         </li>
 
+                        <!-- Navigation for ReservasController (assuming the controller name is ReservasController) -->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Agendamientos" asp-action="AgendaCreate">Crear Agenda</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservas" asp-action="Index">Index Reservas</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservas" asp-action="Crear">Crear Reserva</a>
+                        </li>
+                        <!-- Add more navigation items for other ReservasController actions as needed -->
+
                     </ul>
                 </div>
             </div>

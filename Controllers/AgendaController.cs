@@ -6,22 +6,22 @@ using Microsoft.AspNetCore.Mvc;
 namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
 {
 
-    public class ReservasController : Controller
+    public class AgendaController : Controller
     {
 
         private readonly ConexionBD _conexionBD;
-        private readonly ReservasRepository _reservasRepository;
+        private readonly AgendaRepository _agendasRepository;
 
-        public ReservasController(ConexionBD conexionBD, ReservasRepository reservasRepository)
+        public AgendaController(ConexionBD conexionBD, AgendaRepository agendasRepository)
         {
             _conexionBD = conexionBD;
-            _reservasRepository = reservasRepository;
+            _agendasRepository = agendasRepository;
         }
 
         // GET: ReservasController
         public ActionResult Index()
         {
-            var reservas = _reservasRepository.GetAllReservas;
+            var reservas = _agendasRepository.GetAllAgendas2;
 
             return View(reservas);
         }
@@ -41,7 +41,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    int id = _reservasRepository.CreateReserva(reserva);
+                    int id = _agendasRepository.CreateAgenda(reserva);
 
                     TempData["Mensaje"] = "Reserva creada exitosamente";
 
@@ -61,7 +61,7 @@ namespace Agenda_mvc__ADO.NET_MySQL_ASP.NET_CORE_6._0.Controllers
         // GET: ReservasController/Delete/5  
         public ActionResult Eliminar(int id)
         {
-            _reservasRepository.DeleteReserva(id);
+            _agendasRepository.DeleteAgenda2(id);
 
             TempData["Mensaje"] = "Reserva eliminada";
 
